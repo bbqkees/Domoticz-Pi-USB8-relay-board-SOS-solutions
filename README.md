@@ -1,5 +1,5 @@
 # Domoticz-Pi-USB8-relay-board-SOS-solutions
-Integrate 8-channel relay board with ATMEL8 from SOS solutions or Ebay/Ali into Domoticz on Raspberry Pi
+Integrate 8-channel relay USB board with ATMEL8 microcontroller from SOS solutions or Ebay/AliExpress into Domoticz on Raspberry Pi (3).
 
 ## Which board is this about?
 I got this board from https://www.sossolutions.nl/8xusbrelais but they are also available on Ebay and Aliexpress.
