@@ -83,13 +83,17 @@ So for relay 1 of device ID 6EDX8;<br>
 And for the 'Off' action:<br>
 `script://usbrelay/hidusb-relay-cmd id=6EDX8 OFF 1`<br>
 
-If you put the files somewhere else, change the location in the above commands.<br>
+When you are done, you can use these virtual switches to control the relays as you would do with any other switch in Domoticz.<br>Domoticz will execute the function in the background for every switch action.<br>
+
+Note: If you put the files somewhere else, change the location in the above commands.<br>
 Domoticz uses the domoticz scripts folder as root.
 
 ## Checking relay status
 With the command `usbrelay-cmd STATUS` you will get the status of all relays in HEX format.<br>
 So if relay 2 and 4 are ON while the rest is OFF, the response will be `State: 0A (hex)`.<br>
 'OA' HEX is 0b00001010, You can see this corresponds with relay 2 and 4.<br>
+When Domoticz executes the script, it does not check whether the relay has actually turned on or off.<br>
+If you need this, you need to write custom script that checks the relay status after the switch action with the 'STATUS' parameter.
 
 
 
