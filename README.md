@@ -4,35 +4,35 @@ Integrate 8-channel relay board with ATMEL8 from SOS solutions or Ebay/Ali into 
 ## Which board is this about?
 I got this board from https://www.sossolutions.nl/8xusbrelais but they are also available on Ebay and Aliexpress.
 In the producht description there was a crude Youtube video explaining how to get this board to work.<br>
-However, the board in the video had a FTDI 245R controller chip and the board I got just had an Atmel8 microcontroller on board.
+However, the board in the video had a FTDI 245R controller chip and the board I got just had an Atmel8 microcontroller on board.<br>
 It is recognized as vendor=0x16c0 and product=0x05df.
 
 ## How to get this board to work at all
-Luckily, someone already did most of the work: http://vusb.wikidot.com/project:driver-less-usb-relays-hid-interface and https://github.com/pavel-a/usb-relay-hid
+Luckily, someone already did most of the work: <br>http://vusb.wikidot.com/project:driver-less-usb-relays-hid-interface and <br>https://github.com/pavel-a/usb-relay-hid
 
-This Github is how to integrate this relay board into Domoticz running on a Raspberry Pi 3. This is more a reminder to myself how I got it working and it may be wholefully incomplete, so your mileage may very.
+This Github is how to integrate this relay board into Domoticz running on a Raspberry Pi 3. <br>This is more a reminder to myself how I got it working and it may be wholefully incomplete, so your mileage may very.
 
-If you know your Linux stuff just follow the above mentioned Github and build it yourself. If not, use this description for guidance.
+If you know your Linux stuff just follow the above mentioned Github and build it yourself. <br>If not, use this description for guidance.
 
 ## General control scheme and usage
-What you will do in the end is control the seperate relays on this board via virtual switches in Domoticz.
-This board has a certain firmware on board that emulates USB and listens to a number of commands.
+What you will do in the end is control the seperate relays on this board via virtual switches in Domoticz.<br>
+This board has a certain firmware on board that emulates USB and listens to a number of commands.<br>
 In the On and Off action of the virtual switch you point to a script while passing parameters.
 
-Example to turn on relay 1 of board id ABCDE:<br>
-usbrelay/hidusb-relay-cmd id=ABCDE ON 1<br>
+Example to turn ON relay 1 of board id ABCDE:<br>
+`script://usbrelay/hidusb-relay-cmd id=ABCDE ON 1`<br>
 
-Example to turn off relay 2 of board id ABCDE:<br>
-usbrelay/hidusb-relay-cmd id=ABCDE OFF 2<br>
+Example to turn OFF relay 2 of board id ABCDE:<br>
+`script://usbrelay/hidusb-relay-cmd id=ABCDE OFF 2`<br>
 
 ## Step by Step instructions:
 
 ### Step 1: plug in the board and check if it is the right one
 Plug in the relay board on your Pi and log in with a SSH shell (F.i. with Putty).
 
-type: `sudo lsusb -v | more`
-This will list all devices on USB.
-With the spacebar you can check if the board there.
+type: `sudo lsusb -v | more`<br>
+This will list all devices on USB.<br>
+With the spacebar you can check if the board there.<br>
 You should see this:
 ```
 idVendor           0x16c0
@@ -42,8 +42,9 @@ iProduct           2 USBRelay8
 ```
 
 ### Step 2: Add the USB device to a udev rule so it can be accessed by Domoticz
-To grant access to non-root users, define udev rule for the devices:<br>
-Example: `SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", MODE:="0666" `
+To grant access to non-root users, define an udev rule for the devices:<br>
+Example: `SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", MODE:="0666" `<br>
+(you need to put this in a udev file, do not copy and paste it into the terminal)<br>
 
 ### Step 3 for Non Raspberry PI -> Get and build the source 
 F.i.:
@@ -53,13 +54,13 @@ cd commandline/makemake && make
 ```
 
 ### Step 3 for Raspberry PI -Copy compiled source to correct folder
-Copy the files in the usbrelay folder to the Domoticz scripts folder (/domoticz/scripts/usbrelay).
+Copy the files from the usbrelay folder to a new subfolder in the Domoticz scripts folder (/domoticz/scripts/usbrelay).
 
 ### Step 4: Set permissions
 you may need to set some file permissions so everything can execute properly.
 
 ### Step 5: Find the serial number of the relay board
-In the SSH shell go to the usbrelay folder and type:<br>
+In the shell go to the usbrelay folder and type:<br>
 `usbrelay-cmd ENUM`<br>
 You will get something like this:<br>
 `Board ID=[6EDX8] State: 00 (hex)`<br>
@@ -81,6 +82,16 @@ So for relay 1 of device ID 6EDX8;<br>
 `script://usbrelay/hidusb-relay-cmd id=6EDX8 ON 1`<br>
 And for the 'Off' action:<br>
 `script://usbrelay/hidusb-relay-cmd id=6EDX8 OFF 1`<br>
+
+If you put the files somewhere else, change the location in the above commands.<br>
+Domoticz uses the domoticz scripts folder as root.
+
+## Checking relay status
+With the command `usbrelay-cmd STATUS` you will get the status of all relays in HEX format.<br>
+So if relay 2 and 4 are ON while the rest is OFF, the response will be `State: 0A (hex)`.<br>
+'OA' HEX is 0b00001010, You can see this corresponds with relay 2 and 4.<br>
+
+
 
 
 
