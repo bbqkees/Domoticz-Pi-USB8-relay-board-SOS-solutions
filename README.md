@@ -10,7 +10,7 @@ It is recognized as vendor=0x16c0 and product=0x05df.
 ## How to get this board to work at all
 Luckily, someone already did most of the work: <br>http://vusb.wikidot.com/project:driver-less-usb-relays-hid-interface and <br>https://github.com/pavel-a/usb-relay-hid
 
-This Github is how to integrate this relay board into Domoticz running on a Raspberry Pi 3. <br>This is more a reminder to myself how I got it working and it may be wholefully incomplete, so your mileage may very.
+This particular Github page is how to integrate this relay board into Domoticz running on a Raspberry Pi 3. <br>This is more a reminder to myself how I got it working and it may be wholefully incomplete, so your mileage may very.
 
 If you know your Linux stuff just follow the above mentioned Github and build it yourself. <br>If not, use this description for guidance.
 
@@ -28,23 +28,24 @@ Example to turn OFF relay 2 of board id ABCDE:<br>
 ## Step by Step instructions:
 
 ### Step 1: plug in the board and check if it is the right one
-Plug in the relay board on your Pi and log in with a SSH shell (F.i. with Putty).
+Plug in the relay board on your Pi and log in with via a SSH shell (F.i. with Putty).
 
 type: `sudo lsusb -v | more`<br>
 This will list all devices on USB.<br>
 With the spacebar you can check if the board there.<br>
-You should see this:
+You should see something like this somewhere in the list:
 ```
 idVendor           0x16c0
 idProduct          0x05df
 iManufacturer      1 www.dcttech.com
 iProduct           2 USBRelay8
 ```
+If not, you cannot use this method. If it is there, you can continue.
 
 ### Step 2: Add the USB device to a udev rule so it can be accessed by Domoticz
 To grant access to non-root users, define an udev rule for the devices:<br>
 Example: `SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", MODE:="0666" `<br>
-(you need to put this in a udev file, do not copy and paste it into the terminal)<br>
+(you need to put this in a udev file, do not copy and paste it into the terminal. <br>Google it if you don't know how this works)<br>
 
 ### Step 3 for Non Raspberry PI -> Get and build the source 
 F.i.:
@@ -52,9 +53,10 @@ F.i.:
 git clone https://github.com/pavel-a/usb-relay-hid.git
 cd commandline/makemake && make
 ```
+(Keep in mind the actual source is not from my Github page)
 
 ### Step 3 for Raspberry PI -Copy compiled source to correct folder
-Copy the files from the usbrelay folder to a new subfolder in the Domoticz scripts folder (/domoticz/scripts/usbrelay).
+Copy the files from the usbrelay folder on this Github page to a new subfolder in the Domoticz scripts folder (/domoticz/scripts/usbrelay).
 
 ### Step 4: Set permissions
 you may need to set some file permissions so everything can execute properly.
@@ -65,6 +67,7 @@ In the shell go to the usbrelay folder and type:<br>
 You will get something like this:<br>
 `Board ID=[6EDX8] State: 00 (hex)`<br>
 The ID is your boards' serial number. Write this down.<br>
+If you have more of these boards connected, you will see more boards in the list.
 
 ### Step 6: Add the virtual switches in Domoticz
 In Domoticz you need to create one virtual switch for every relay.<br>
@@ -95,7 +98,13 @@ So if relay 2 and 4 are ON while the rest is OFF, the response will be `State: 0
 When Domoticz executes the script, it does not check whether the relay has actually turned on or off.<br>
 If you need this, you need to write custom script that checks the relay status after the switch action with the 'STATUS' parameter.
 
-
+## Additional commands
+```
+usbrelay-cmd id=ABCDE ON ALL
+usbrelay-cmd id=ABCDE OFF ALL
+```
+If you omit the device ID, the script will execute the command for the first ID it found.<br>
+So if you have more of these boards connected, you need to include the device ID.
 
 
 
