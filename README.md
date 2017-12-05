@@ -43,10 +43,16 @@ iProduct           2 USBRelay8
 
 ### Step 2: Add the USB device to a udev rule so it can be accessed by Domoticz
 To grant access to non-root users, define udev rule for the devices:<br>
-`Example: SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", MODE:="0666" `
+Example: `SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", MODE:="0666" `
 
-### Step 3: Non Raspberry PI -> Get and build the source 
-### Step 3: Raspberry PI -Copy compiled source to correct folder
+### Step 3 for Non Raspberry PI -> Get and build the source 
+F.i.:
+```
+git clone https://github.com/pavel-a/usb-relay-hid.git
+cd commandline/makemake && make
+```
+
+### Step 3 for Raspberry PI -Copy compiled source to correct folder
 Copy the files in the usbrelay folder to the Domoticz scripts folder (/domoticz/scripts/usbrelay).
 
 ### Step 4: Set permissions
