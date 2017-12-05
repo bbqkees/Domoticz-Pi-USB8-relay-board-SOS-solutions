@@ -1,23 +1,24 @@
 # Domoticz-Pi-USB8-relay-board-SOS-solutions
-Integrate 8-channel relay USB board with ATMEL8 microcontroller from SOS solutions or Ebay/AliExpress into Domoticz on Raspberry Pi (3).
+Integrate 2/4/8-channel relay USB board with an ATMEL8 microcontroller from SOS solutions or Ebay/AliExpress into Domoticz on Raspberry Pi (3).
 
 ## Which board is this about?
 I got this board from https://www.sossolutions.nl/8xusbrelais but they are also available on Ebay and Aliexpress.
 In the producht description there was a crude Youtube video explaining how to get this board to work.<br>
-However, the board in the video had a FTDI 245R controller chip and the board I got just had an Atmel8 microcontroller on board.<br>
-It is recognized as vendor=0x16c0 and product=0x05df.
+However, the board in the video had a FTDI 245R controller chip and the board I got only had an Atmel8 microcontroller on board.<br>
+The board is recognized as vendor=0x16c0 and product=0x05df.
 
 ## How to get this board to work at all
 Luckily, someone already did most of the work: <br>http://vusb.wikidot.com/project:driver-less-usb-relays-hid-interface and <br>https://github.com/pavel-a/usb-relay-hid
 
-This particular Github page is how to integrate this relay board into Domoticz running on a Raspberry Pi 3. <br>This is more a reminder to myself how I got it working and it may be wholefully incomplete, so your mileage may very.
+This particular Github page is a short guide how to integrate this relay board into Domoticz running on a Raspberry Pi 3. <br>This is more a reminder to myself how I got it working and it may be wholefully incomplete, so your mileage may very.
 
-If you know your Linux stuff just follow the above mentioned Github and build it yourself. <br>If not, use this description for guidance.
+If you know your Linux stuff just follow the above mentioned Github and build it yourself. <br>If not, you can use this description for guidance.
 
 ## General control scheme and usage
-What you will do in the end is control the seperate relays on this board via virtual switches in Domoticz.<br>
+What you will do in the end is control the separate relays on this board via virtual switches in Domoticz.<br>
 This board has a certain firmware on board that emulates USB and listens to a number of commands.<br>
-In the On and Off action of the virtual switch you point to a script while passing parameters.
+In the On and Off action of the virtual switch you point to a script while passing parameters.<br>
+In turn this script/utility will connect to the Atmel controller via USB and set those relays for you.
 
 Example to turn ON relay 1 of board id ABCDE:<br>
 `script://usbrelay/hidusb-relay-cmd id=ABCDE ON 1`<br>
@@ -28,7 +29,7 @@ Example to turn OFF relay 2 of board id ABCDE:<br>
 ## Step by Step instructions:
 
 ### Step 1: plug in the board and check if it is the right one
-Plug in the relay board on your Pi and log in with via a SSH shell (F.i. with Putty).
+Plug in the relay board to a free USB port on your Pi and log in to the Pi via a SSH shell (F.i. with Putty).
 
 type: `sudo lsusb -v | more`<br>
 This will list all devices on USB.<br>
