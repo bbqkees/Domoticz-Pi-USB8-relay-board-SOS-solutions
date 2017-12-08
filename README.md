@@ -3,7 +3,7 @@ Integrate 2/4/8-channel relay USB board with an ATMEL8 microcontroller from SOS 
 
 ## Which board is this about?
 I got this board from https://www.sossolutions.nl/8xusbrelais but they are also available on Ebay and Aliexpress.
-In the producht description there was a crude Youtube video explaining how to get this board to work.<br>
+In the product description there was a crude Youtube video explaining how to get this board to work.<br>
 However, the board in the video had a FTDI 245R controller chip and the board I got only had an Atmel8 microcontroller on board.<br>
 The board is recognized as vendor=0x16c0 and product=0x05df.
 
@@ -100,7 +100,7 @@ With the command `usbrelay-cmd STATUS` you will get the status of all relays in 
 So if relay 2 and 4 are ON while the rest is OFF, the response will be `State: 0A (hex)`.<br>
 '0A' HEX is 0b00001010, You can see this corresponds with relay 2 and 4.<br>
 When Domoticz executes the script, it does not check whether the relay has actually turned on or off.<br>
-If you need this, you need to write custom script that checks the relay status after the switch action with the 'STATUS' parameter.
+If you need this, you need to write a custom script that checks the relay status after the switch action with the 'STATUS' parameter.
 
 ## Additional commands
 ```
