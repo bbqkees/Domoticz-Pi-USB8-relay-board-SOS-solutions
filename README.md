@@ -45,8 +45,11 @@ If not, you cannot use this method. If it is there, you can continue.
 
 ### Step 2: Add the USB device to a udev rule so it can be accessed by Domoticz
 To grant access to non-root users, define an udev rule for the devices:<br>
-Example: `SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", MODE:="0666" `<br>
-(you need to put this in a udev file, do not copy and paste it into the terminal. <br>Google it if you don't know how this works)<br>
+Command f.i.: `sudo nano /etc/udev/rules.d/99-usbrelay.rules`<br>
+Add the following line to the file and save the file (CTRL+X):<br>
+`SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", MODE:="0666"`<br>
+(For some background info on udev see this: https://hackaday.com/2009/09/18/how-to-write-udev-rules/)<br>
+<br>
 
 ### Step 3 for Non Raspberry PI -> Get and build the source 
 F.i.:
